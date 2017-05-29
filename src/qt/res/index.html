@@ -1,0 +1,1733 @@
+﻿<!DOCTYPE html>
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
+  <meta charset="utf-8" /> 
+  <title>FulcraCoin GUIv2 alpha</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" /> 
+  <script>function preventDefault(e){e=e||event,e.preventDefault()}window.addEventListener("dragover",preventDefault,!1),window.addEventListener("drop",preventDefault,!1)</script> 
+  <link href="qrc:///assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" /> 
+  <link href="qrc:///assets/plugins/boostrapv3/css/bootstrap.min.css" rel="stylesheet" /> 
+  <link href="qrc:///assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet" media="screen" /> 
+  <link href="qrc:///assets/css/font-awesome.min.css" rel="stylesheet" /> 
+  <link href="qrc:///assets/css/font-awesome-buttons.min.css" rel="stylesheet" /> 
+  <link href="qrc:///assets/plugins/contextMenu/contextMenu.css" rel="stylesheet" /> 
+  <link href="qrc:///assets/css/normalize.css" rel="stylesheet" /> 
+  <link href="qrc:///assets/css/shadow.min.css" rel="stylesheet" /> 
+  <link href="qrc:///assets/css/framework.min.css" class="main-stylesheet" rel="stylesheet" /> 
+  <link href="qrc:///assets/css/framework-icons.min.css" rel="stylesheet" /> 
+  <link rel="stylesheet" href="qrc:///assets/plugins/emojione/assets/css/emojione.min.css" media="all" /> 
+ </head>
+ <body class="fixed-header menu-pin"> 
+  <div class="page-sidebar" data-framework="sidebar"> 
+   <div id="appMenu" class="sidebar-overlay-slide from-top"></div> 
+   <div class="sidebar-header"> 
+    <img src="qrc:///assets/img/FulcraCoin_logo.png" alt="logo" class="brand" data-src="qrc:///assets/img/FulcraCoin_logo.png" width="150" height="60" />
+    <div class="sidebar-header-controls"> 
+     <button data-toggle-pin="sidebar" class="btn btn-link visible-lg-inline" type="button"> <i class="fa fs-12"></i> </button> 
+    </div> 
+    <div id="sidebar-header-collapsed" class="sidebar-header-collapsed"> 
+     <img src="qrc:///assets/img/FulcraCoin_logo.png" alt="logo" class="brand" data-src="qrc:///assets/img/FulcraCoin_logo.png" width="150" height="60" style="min-height:100%;min-width:100%" />
+    </div> 
+   </div> 
+   <div class="sidebar-menu"> 
+    <ul class="menu-items" id="navitems"> 
+     <li class="m-t-30"><a href="#overview"><span class="title">概况</span> <span class="icon-thumbnail"><i class="fa fa-circle-o"></i></span></a> </li>
+     <li><a href="#"><span class="title">钱包</span> <span class="arrow"></span> <span class="icon-thumbnail"><i class="fa fa-user"></i></span></a> 
+      <ul class="sub-menu"> 
+       <li><a href="#send">发送 <span class="icon-thumbnail"><i class="fa fa-arrow-right"></i></span></a> </li>
+       <li><a href="#receive">接收 <span class="icon-thumbnail"><i class="fa fa-arrow-left"></i></span></a> </li>
+       <li><a href="#transactions">交易记录 <span class="icon-thumbnail"><i class="fa fa-exchange"></i></span></a> </li>
+       <li><a href="#addressbook">地址簿 <span class="icon-thumbnail"><i class="fa fa-bars"></i></span></a> </li>
+      </ul> </li>
+     <li><a href="#market"><span class="title">市场</span> <span class="icon-thumbnail"><i class="fa fa-shopping-cart"></i></span></a> </li>
+     <li><a href="#messages" id="chat-menu-link" onclick="scrollMessages()"><span class="title">聊天</span> <span class="icon-thumbnail"><i class="fa fa-comment"></i> </span><span class="details"><span class="user-notifications"><span id="message-count">0</span> </span>通知</span></a> </li>
+     <li><a href="#options"><span class="title">选项</span> <span class="icon-thumbnail"><i class="fa fa-wrench"></i></span></a> </li>
+
+          <li style="display:none;"><a href=#><span class=title>区块浏览</span> <span
+						class=arrow></span> <span class=icon-thumbnail><i
+							class="fa fa fa-key"></i></span></a>
+				<ul class=sub-menu>
+						<li><a href=#walletmanagement>区块浏览器<span class=icon-thumbnail><i
+									class="fa fa-key"></i></span>
+						</a></li>
+						
+					</ul></li>
+     <li><a href="#"><span class="title">备份</span> <span class="arrow"></span> <span class="icon-thumbnail"><i class="fa fa-floppy-o"></i></span></a> 
+      <ul class="sub-menu"> 
+       <li><a href="#" onclick="bridge.userAction([&quot;backupWallet&quot;])">备份钱包<span class="icon-thumbnail"><i class="fa fa-floppy-o"></i></span> </a> </li>
+       <li class="encryptWallet"><a href="#" onclick="bridge.userAction([&quot;encryptWallet&quot;])">加密钱包 <span class="icon-thumbnail"><i id="encryptWallet" class="fa fa-lock"></i></span> </a> </li>
+       <li id="changePassphrase"><a href="#" onclick="bridge.userAction([&quot;changePassphrase&quot;])">修改密码 <span class="icon-thumbnail"><i class="fa fa-user-secret"></i></span> </a> </li>
+       <li id="toggleLock"><a href="#" onclick="bridge.userAction([&quot;toggleLock&quot;])">加密钱包 <span class="icon-thumbnail"><i class="fa fa-unlock-alt"></i></span></a> </li>
+      </ul> </li>
+     <li><a href="#"><span class="title">工具</span> <span class="arrow"></span> <span class="icon-thumbnail"><i class="fa fa-cogs"></i></span></a> 
+      <ul class="sub-menu"> 
+       <li><a href="#chaindata" onclick="chainDataPage.updateAnonOutputs()">链数据 <span class="icon-thumbnail"><i class="fa fa-link"></i></span></a> </li>
+       <li><a href="#blockdata" onclick="blockExplorerPage.updateLatestBlocks()">区块浏览器 <span class="icon-thumbnail"><i class="fa fa-th-large"></i></span> </a> </li>
+       <li><a href="#" data-target="#verify-sign-message-modal" data-toggle="modal" onclick="$(&quot;#sign-href&quot;).click(),$(&quot;#sign-address&quot;)">签名消息 <span class="icon-thumbnail"><i class="fa fa-pencil"></i></span> </a> </li>
+       <li><a href="#" data-target="#verify-sign-message-modal" data-toggle="modal" onclick="$(&quot;#verify-href&quot;).click(),$(&quot;#verify-address&quot;)">验证消息 <span class="icon-thumbnail"><i class="fa fa-check-square-o"></i></span> </a> </li>
+       <li><a href="#" onclick="bridge.userAction([&quot;debugClicked&quot;])">调试 <span class="icon-thumbnail"><i class="fa fa-bug"></i></span> </a> </li>
+       <li><a href="#b" onclick="bridge.userAction([&quot;aboutClicked&quot;])">关于 <span class="icon-thumbnail"><i class="fa fa-info-circle"></i></span> </a> </li>
+       <li><a href="#" onclick="bridge.userAction([&quot;aboutQtClicked&quot;])">关于QT <span class="icon-thumbnail"><i class="fa fa-info-circle"></i></span> </a> </li>
+      </ul> </li>
+    </ul> 
+    <div class="clearfix"></div> 
+   </div> 
+  </div> 
+  <div class="page-container"> 
+   <div class="header"> 
+    <div class="pull-left full-height visible-sm visible-xs"> 
+     <div class="sm-action-bar"> 
+      <a href="#" class="btn-link toggle-sidebar" data-toggle="sidebar"><span class="icon-set menu-hambuger"></span></a> 
+     </div> 
+    </div> 
+    <div class="pull-right full-height visible-sm visible-xs"> 
+     <div class="sm-action-bar"></div> 
+    </div> 
+    <div class="pull-left sm-table"> 
+     <div class="header-inner"></div> 
+    </div> 
+    <div class="pull-right"> 
+     <div class="visible-lg visible-md m-t-10"> 
+      <div class="dropdown pull-right"> 
+       <div id="status" class="b-grey"> 
+        <ul class="no-margin hidden-sm hidden-xs no-style p-l-10 p-r-10 p-b-10"> 
+         <li class="inline p-l-10"><progress id="syncProgressBar" max="100" value="1" data-title="正在下载区块...
+                                已经下载了 0 ..."></progress> </li>
+         <li class="inline p-l-10">
+          <div id="tor" class="no-tor" data-title="Tor网络离线"></div> </li>
+         <li class="inline p-l-10">
+          <div id="i2p" class="no-i2p" data-title="i2p网络离线"></div> </li>
+         <li class="inline p-l-10">
+          <div id="encryptionIcon" class="no-encryption f-off" onclick="bridge.userAction([&quot;toggleLock&quot;])" data-title="钱包已加密，当前为解锁状态"></div> </li>
+         <li class="inline p-l-10">
+          <div id="stakingIcon" class="not-staking" data-title="当前为上锁状态不能进行权益"></div> </li>
+         <li class="inline p-l-10">
+          <div id="connectionsIcon" class="connect-0" data-title="0 个可用链接"></div> </li>
+         <li class="inline p-l-10">
+          <div id="syncingIcon" class="syncing-spinner" data-title="钱包正在同步"></div> 
+          <div id="blocksIcon" class="no-syncing none" data-title="钱包正在同步"></div> </li>
+         <li class="inline p-l-10"><a href="#" data-toggle="quickview" data-toggle-element="#quickview">
+           <div id="chatIcon" class="chat-icon" data-title="打开聊天列表"></div></a> </li>
+        </ul> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="page-content-wrapper"> 
+    <div class="content"> 
+     <div class="container-fluid no-padding"> 
+      <div class="modal fade stick-up" id="qrcode-modal" tabindex="-1" role="dialog" aria-hidden="true"> 
+       <div class="modal-dialog"> 
+        <div class="modal-content p-b-25"> 
+         <div class="modal-header clearfix text-left"> 
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="pg-close fs-20"></i> </button> 
+          <h5 class="p-l-10" style="border-bottom:1px solid #F0F1F3">二维码</h5> 
+          <div id="qrcode"></div> 
+          <div class="form-group"> 
+           <div class="col-sm-12"> 
+            <div class="row"> 
+             <div class="col-sm-12"> 
+              <textarea id="qrcode-data" class="form-control" style="color:#131218" disabled="" rows="2"></textarea> 
+             </div> 
+            </div> 
+           </div> 
+          </div> 
+          <div class="form-group"> 
+           <div class="col-sm-12"> 
+            <div class="row"> 
+             <div class="col-sm-12"> 
+              <label for="qraddress" class="p-t-10 recipient">地址:</label>
+              <input id="qraddress" class="form-control pay_to input_box" placeholder="输入地址 (e.g. SXywGBZBowrppUwwNUo1GCRDTibzJi7g2M)" onchange="showQRCode()" /> 
+             </div> 
+            </div> 
+           </div> 
+          </div> 
+          <div class="form-group"> 
+           <div class="col-sm-12"> 
+            <div class="row"> 
+             <div class="col-sm-12"> 
+              <label for="qrlabel" class="p-t-10 recipient">标签:</label>
+              <input id="qrlabel" class="form-control label2 input_box" placeholder="输入标签以便保存到地址薄" onchange="showQRCode()" /> 
+             </div> 
+            </div> 
+           </div> 
+          </div> 
+          <div class="form-group"> 
+           <div class="col-sm-12"> 
+            <div class="row"> 
+             <div class="col-sm-12"> 
+              <label for="qrnarration" class="p-t-10 recipient">留言:</label>
+              <input id="qrnarration" class="form-control narration input_box" placeholder="E为这笔交易添加备注 (最大24个字符)" onchange="showQRCode()" /> 
+             </div> 
+            </div> 
+           </div> 
+          </div> 
+          <div class="form-group"> 
+           <div class="col-sm-12"> 
+            <label for="qramount" class="p-t-10 recipient">总数:</label> 
+            <div class="row"> 
+             <div class="col-sm-8"> 
+              <input id="qramount" class="form-control" type="number" placeholder="0.00000000" step="0.01" value="0.00000000" onchange="unit.parse(this,$(&quot;#qrunit&quot;).val()),showQRCode()" /> 
+             </div> 
+             <select id="qrunit" class="unit select-drop-down" style="width:167px" onchange="unit.format(&quot;#qramount&quot;,$(this).val()),showQRCode()"><option value="0" title="FulcraCoin">FUC </option><option value="1" title="Milli-FulcraCoin (1 / 1000)">mFUC </option><option value="2" title="Micro-FulcraCoin (1 / 1000000)">&micro;FUC </option><option value="3" title="FulcraCoinshi (1 / 100000000)">FulcraCoinshi</option></select>
+            </div> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+      <div class="modal fade stick-up" id="add-address-modal" tabindex="-1" role="dialog" aria-hidden="true"> 
+       <div class="modal-dialog"> 
+        <div class="modal-content p-b-25" style="background:#fff"> 
+         <div id="add-rcv-address" style="display:none"> 
+          <div class="modal-header clearfix text-left"> 
+           <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="pg-close fs-20"></i> </button> 
+           <h5 class="p-l-10" style="border-bottom:1px solid #F0F1F3">添加地址</h5> 
+           <div class="form-group"> 
+            <div class="col-sm-12"> 
+             <label for="new-address-label" class="recipient">标签:</label> 
+             <div class="row"> 
+              <div class="col-sm-8"> 
+               <input id="new-address-label" class="form-control recipient input_box" data-title="为这个地址添加一段文本以便添加到您的地址薄中" placeholder="为这个地址添加一段文本以便添加到您的地址薄中" maxlength="128" /> 
+              </div> 
+              <select id="new-addresstype" class="recipient select-drop-down" style="width:167px"><option value="1" title="Normal">Normal </option><option value="2" title="Stealth">Stealth </option><option value="3" title="BIP32">BIP32</option></select> 
+             </div> 
+            </div> 
+           </div> 
+           <div class="pull-right m-r-10 m-t-25"> 
+            <a class="btn btn-danger btn-cons" href="javascript:addAddress();">添加地址<i class="fa fa-check"></i></a> 
+           </div> 
+          </div> 
+         </div> 
+         <div id="add-send-address" style="display:none"> 
+          <div class="modal-header clearfix text-left"> 
+           <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="pg-close fs-20"></i> </button> 
+           <h5 class="p-l-10" style="border-bottom:1px solid #F0F1F3">添加新联系人</h5> 
+           <div class="form-group"> 
+            <div class="col-sm-12"> 
+             <label for="new-send-label" class="recipient">标签:</label>
+             <div class="row"> 
+              <div class="col-sm-12"> 
+               <input id="new-send-label" class="form-control recipient input_box" data-title="为这个地址添加一段文本以便添加到您的地址薄中" placeholder="为这个地址添加一段文本以便添加到您的地址薄中" maxlength="128" />
+               <br /> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <div class="form-group"> 
+            <div class="col-sm-12"> 
+             <label for="new-send-address" class="recipient">地址:</label> 
+             <div class="row"> 
+              <div class="col-sm-12"> 
+               <input id="new-send-address" class="form-control recipient input_box" data-title="为这个地址添加一段文本以便添加到您的地址薄中" placeholder="为这个地址添加一段文本以便添加到您的地址薄中" maxlength="128" /> 
+               <p id="new-send-address-error" class="red"> </p>
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <div class="pull-right m-r-10 m-t-25"> 
+            <a class="btn btn-danger btn-cons" href="javascript:addSendAddress();">添加发送人 <i class="fa fa-check"></i></a> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+      <div class="modal fade stick-up" id="address-lookup-modal" tabindex="-1" role="dialog" aria-hidden="true" style="z-index:1060"> 
+       <div class="modal-dialog"> 
+        <div class="modal-content p-b-25" style="background:#fff"> 
+         <div class="modal-header clearfix text-left"> 
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="pg-close fs-20"></i> </button> 
+          <h5 class="p-l-10" style="border-bottom:1px solid #F0F1F3">查询地址</h5> 
+          <div class="form-group"> 
+           <div class="col-sm-12 m-b-25"> 
+            <div class="row"> 
+             <div class="col-sm-8"> 
+              <input id="address-lookup-filter" hidden="" /> 
+              <input id="address-lookup-address-filter" class="form-control" placeholder="通过地址过滤" /> 
+             </div> 
+             <select id="address-lookup-address-type" class="recipient select-drop-down" style="width:167px"><option value="" title="过滤地址类型" selected="">地址类型 </option><option title="Normal">Normal </option><option title="Stealth">Stealth </option><option title="Group">Group </option><option title="BIP32">BIP32</option></select> 
+            </div> 
+           </div> 
+          </div> 
+          <table id="address-lookup-table" class="footable-lookup shadow table table-hover" data-page-size="5" data-filter="#address-lookup-filter" width="100%" style="margin-bottom:0;border-top:1px solid rgba(230,230,230,.7);border-bottom:1px solid rgba(230,230,230,.7)"> 
+           <thead> 
+            <tr> 
+             <th data-toggle="true" title="Label" data-sort-initial="ascending">标签 </th>
+             <th data-toggle="true" title="Address">地址 </th>
+             <th data-toggle="true" title="Public Key">公钥 </th>
+             <th data-toggle="true" title="Address Type">地址类型 </th>
+            </tr>
+           </thead>
+           <tbody> 
+           </tbody>
+           <tfoot> 
+            <tr> 
+             <td colspan="4">
+              <div class="pagination pager hide-if-no-paging"></div> </td>
+            </tr>
+           </tfoot>
+          </table> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+      <div class="modal fade stick-up" id="blkexp-txn-modal" tabindex="-1" role="dialog" aria-hidden="true"> 
+       <div class="modal-dialog"> 
+        <div class="modal-content" style="background:#fff"> 
+         <div class="modal-header clearfix text-left"> 
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="pg-close fs-20"></i> </button> 
+          <h5 class="p-l-10" style="border-bottom:1px solid #F0F1F3">交易Hash</h5> 
+          <div class="ng-scope" data-ng-if="block.hash"> 
+           <div class="form-group"> 
+            <div class="col-sm-12 p-b-25 p-t-10"> 
+             <div class="row"> 
+              <div class="col-sm-12"> 
+               <center> 
+                <span class="text-muted" style="font-weight:700" id="txn-hash"></span> 
+               </center> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <table class="table table-hover shadow" width="100%" style="margin-bottom:0;border-top:1px solid rgba(230,230,230,.7);border-bottom:1px solid rgba(230,230,230,.7)"> 
+            <thead> 
+             <tr> 
+              <th title="Label">类型 </th>
+              <th title="Address">输出 </th>
+             </tr>
+            </thead>
+            <tbody> 
+             <tr class="modal-tr"> 
+              <td><strong>大小(字节)</strong> </td>
+              <td class="text-muted" id="txn-size"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>接收时间</strong> </td>
+              <td class="text-muted" id="txn-rcvtime"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>开采时间</strong> </td>
+              <td class="text-muted" id="txn-minetime"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>所属区块</strong> </td>
+              <td class="text-muted" id="txn-blkhash"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td id="lbl-reward-or-fee"><strong>收益</strong> </td>
+              <td class="text-muted" id="txn-reward"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>确认数</strong> </td>
+              <td class="text-muted" id="txn-confirmations"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>值</strong> </td>
+              <td class="text-muted" id="txn-value"> </td>
+             </tr>
+            </tbody>
+           </table> 
+           <table class="table shadow" width="100%"> 
+            <tbody>
+             <tr> 
+              <td width="50%" style="vertical-align:top">
+               <table id="txn-detail-inputs" class="table table-hover shadow" width="50%"> 
+                <thead> 
+                 <tr> 
+                  <th data-toggle="true" data-title="Inputs" data-sort-initial="ascending">输入 </th>
+                  <th data-toggle="true" data-title="Values" data-sort-initial="ascending">值 </th>
+                 </tr>
+                </thead>
+                <tbody> 
+                </tbody>
+               </table> </td>
+              <td width="50%" style="vertical-align:top">
+               <table id="txn-detail-outputs" class="table table-hover shadow" width="50%"> 
+                <thead> 
+                 <tr> 
+                  <th data-toggle="true" data-title="Outputs" data-sort-initial="ascending">输出 </th>
+                  <th data-toggle="true" data-title="Values" data-sort-initial="ascending">值 </th>
+                 </tr>
+                </thead>
+                <tbody> 
+                </tbody>
+               </table> </td>
+             </tr>
+            </tbody>
+           </table> 
+           <div id="error-msg"></div> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+      <div class="modal fade stick-up" id="block-info-modal" tabindex="-1" role="dialog" aria-hidden="true"> 
+       <div class="modal-dialog"> 
+        <div class="modal-content" style="background:#fff"> 
+         <div class="modal-header clearfix text-left"> 
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="pg-close fs-20"></i> </button> 
+          <h5 class="p-l-10" style="border-bottom:1px solid #F0F1F3">区块Hash</h5> 
+          <div class="ng-scope" data-ng-if="block.hash"> 
+           <div class="form-group"> 
+            <div class="col-sm-12 p-b-25 p-t-10"> 
+             <div class="row"> 
+              <div class="col-sm-12"> 
+               <center> 
+                <span class="text-muted" style="font-weight:700" id="blk-hash"></span> 
+               </center> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <h5 class="p-l-10" style="border-bottom:1px solid #F0F1F3">总计</h5> 
+           <table class="shadow table table-hover"> 
+            <thead> 
+             <tr> 
+              <th data-toggle="true" data-sort-initial="ascending">类型 </th>
+              <th data-toggle="true" data-sort-initial="ascending">输出 </th>
+             </tr>
+            </thead>
+            <tbody> 
+             <tr class="modal-tr"> 
+              <td><strong>交易</strong> </td>
+              <td class="text-muted" id="blk-numtx"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>高度</strong> </td>
+              <td class="text-muted" id="blk-height"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>区块类型</strong> </td>
+              <td class="text-muted" id="blk-type"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>区块收益</strong> </td>
+              <td class="text-muted" id="blk-reward"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>时间戳</strong> </td>
+              <td class="text-muted" id="blk-timestamp"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>Merkle Root</strong> </td>
+              <td class="text-muted" id="blk-merkleroot"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>上一区块</strong> </td>
+              <td class="text-muted" id="blk-prevblock"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>下一区块</strong> </td>
+              <td class="text-muted" id="blk-nextblock"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>难度</strong> </td>
+              <td class="text-muted" id="blk-difficulty"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>Bits</strong> </td>
+              <td class="text-muted" id="blk-bits"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>大小(字节)</strong> </td>
+              <td class="text-muted" id="blk-size"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>版本</strong> </td>
+              <td class="text-muted" id="blk-version"> </td>
+             </tr>
+             <tr class="modal-tr"> 
+              <td><strong>Nonce</strong> </td>
+              <td class="text-muted" id="blk-nonce"> </td>
+             </tr>
+            </tbody>
+           </table> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+      <div class="modal fade stick-up" id="verify-sign-message-modal" tabindex="-1" role="dialog" aria-hidden="true"> 
+       <div class="modal-dialog"> 
+        <div class="modal-content" style="background:#fff"> 
+         <div class="modal-header clearfix text-left"> 
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="pg-close fs-20"></i> </button> 
+          <div class="p-l-10" style="border-bottom:1px solid #F0F1F3"> 
+           <div id="signing-options"> 
+            <h5> <a id="sign-href" onclick="$(&quot;#sign-message-modal&quot;).show(),$(&quot;#verify-message-modal&quot;).hide(),$(&quot;#sign-href&quot;).addClass(&quot;heading-selected&quot;),$(&quot;#sign-href&quot;).removeClass(&quot;heading-deselected&quot;),$(&quot;#verify-href&quot;).addClass(&quot;heading-deselected&quot;),$(&quot;#verify-href&quot;).removeClass(&quot;heading-selected&quot;)">签名消息</a> / <a id="verify-href" onclick="$(&quot;#sign-message-modal&quot;).hide(),$(&quot;#verify-message-modal&quot;).show(),$(&quot;#sign-href&quot;).addClass(&quot;heading-deselected&quot;),$(&quot;#sign-href&quot;).removeClass(&quot;heading-selected&quot;),$(&quot;#verify-href&quot;).addClass(&quot;heading-selected&quot;),$(&quot;#verify-href&quot;).removeClass(&quot;heading-deselected&quot;)">验证消息</a> </h5> 
+           </div> 
+          </div> 
+          <div id="sign-message-modal" style="display:none"> 
+           <p> </p>
+           <center class="p-l-10 p-r-10">
+你可以用你的地址来签署消息来证明你拥有他们。要小心不要签署任何内容模糊的信息，<br/>因为网络钓鱼攻击可能会利用这些模糊内容欺骗你，已达到获取你签署的证明给他们。<br/>只有在你完全清楚要签名的信息和内容的情况下来才做这些。
+           </center> 
+           <div class="form-group"> 
+            <div class="col-sm-12 p-t-15"> 
+             <label class="recipient">地址:</label> 
+             <div class="row"> 
+              <div class="col-sm-12"> 
+               <input id="sign-address" class="input_box form-control" data-title="输入有效地址： (例如. SaKYqfD8J3vw4RTnqtgk2K9B67CBaL3mhV)" placeholder="输入有效地址： (例如. SaKYqfD8J3vw4RTnqtgk2K9B67CBaL3mhV)" maxlength="128" /> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <div class="form-group"> 
+            <div class="col-sm-12 p-t-15"> 
+             <label class="recipient">信息:</label> 
+             <div class="row"> 
+              <div class="col-sm-12"> 
+               <textarea id="sign-message" class="input_box form-control" placeholder="输入要签名的信息" data-title="输入要签名的信息"></textarea> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <div class="form-group"> 
+            <div class="col-sm-12 p-t-15"> 
+             <label class="recipient">签名:</label> 
+             <div class="row"> 
+              <div class="col-sm-10"> 
+               <input id="sign-signature" class="input_box form-control" placeholder="点击签名消息来签名" data-title="点击签名消息来签名" readonly="" /> 
+              </div> 
+              <div class="col-sm-2"> 
+               <div class="btn-group"> 
+                <a class="btn btn-default" href="javascript:bridge.copy($('#sign-signature').val());" data-title="复制签名消息"><i class="fa fa-copy"></i></a> 
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <span id="sign-result" class="m-l-15 p-t-10" style="display:block;width:100%"></span> 
+           <div class="pull-right m-r-10 m-t-25 m-b-25"> 
+            <a class="btn btn-danger btn-cons" href="javascript:signMessage();"><i class="fa fa-check"></i> 签名消息</a> 
+            <a class="btn btn-danger btn-cons" href="javascript:$('#sign-message-modal').find('.input_box').val('');$('#sign-result').html('');"><i class="fa fa-close"></i> 清空</a> 
+           </div> 
+          </div> 
+          <div id="verify-message-modal" style="display:none"> 
+           <p> </p>
+           <center class="p-l-10 p-r-10">
+			 输入签名地址、消息(确保你复制换行、空格、制表符等完全)和签名来验证以下消息。
+            <br /> 
+            <br /> 
+			注意不要读取已经签名的信息，这样可以来自第三方的攻击。
+           </center> 
+           <div class="form-group"> 
+            <div class="col-sm-12"> 
+             <label class="recipient">地址:</label>
+             <div class="row"> 
+              <div class="col-sm-12"> 
+               <input id="verify-address" class="input_box form-control" data-title="输入地址来验证消息 (例如. SaKYqfD8J3vw4RTnqtgk2K9B67CBaL3mhV)" placeholder="输入地址来验证消息 (例如. SaKYqfD8J3vw4RTnqtgk2K9B67CBaL3mhV)" maxlength="128" /> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <div class="form-group"> 
+            <div class="col-sm-12 p-t-15"> 
+             <label class="recipient">验证消息:</label> 
+             <div class="row"> 
+              <div class="col-sm-12"> 
+               <textarea id="verify-message" class="input_box form-control" placeholder="输入要验证的消息" data-title="输入要验证的消息"></textarea> 
+               <br /> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <div class="form-group"> 
+            <div class="col-sm-12"> 
+             <label class="recipient">签名:</label> 
+             <div class="row"> 
+              <div class="col-sm-10"> 
+               <input id="verify-signature" class="input_box form-control" placeholder="输入签名" data-title="输入签名" /> 
+              </div> 
+              <div class="col-sm-2"> 
+               <div class="btn-group"> 
+                <a class="btn btn-default" href="javascript:paste('#verify-signature');" data-title="粘贴"><i class="fa fa-copy"></i></a> 
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <span id="verify-result" class="m-l-15 p-t-10" style="display:block;width:100%"></span> 
+           <div class="pull-right m-r-10 m-t-25 m-b-25"> 
+            <a class="btn btn-danger btn-cons" href="javascript:verifyMessage();"><i class="fa fa-check"></i> 验证消息</a> 
+            <a class="btn btn-danger btn-cons" href="javascript:$('#verify-message-modal').find('.input_box').val('');$('#verify-result').html('');"><i class="fa fa-close"></i>清空</a> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+      <div class="modal fade stick-up" id="transaction-info-modal" tabindex="-1" role="dialog" aria-hidden="true"> 
+       <div class="modal-dialog"> 
+        <div class="modal-content" style="background:#fff"> 
+         <div class="modal-header clearfix text-left"> 
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="pg-close fs-20"></i> </button> 
+          <h5 class="p-l-10" style="border-bottom:1px solid #F0F1F3">详情</h5> 
+          <div id="transaction-info"></div> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+      <article id="overview"> 
+       <div class="page-content-wrapper"> 
+        <nav class="navbar navbar-default nav-sub-menu p-t-10 p-b-10 p-r-35 p-l-35" style="min-height:75px" role="navigation"> 
+         <div class="pull-left"> 
+          <h4 style="font-weight:bolder">概况</h4> 
+         </div> 
+         <div class="p-t-10 pull-right"> 
+          <div class="navigate"> 
+           <a href="#send" class="btn-danger btn btn-cons">发送<i class="fa fa-arrow-right"></i> </a> 
+          </div> 
+         </div> 
+         <div class="container-fluid"> 
+          <div class="navbar-header"></div> 
+         </div> 
+        </nav> 
+        <div class="row m-t-45 m-l-35 m-r-35"> 
+         <div class="panel full-width bg-transparent"> 
+          <div class="panel-body" style="padding:0"> 
+           <div class="row"> 
+            <div class="col-md-6"> 
+             <div class="panel panel-shadow panel-default no-border" id="portlet-linear-color"> 
+              <div class="panel-heading"> 
+               <div class="panel-title"> 
+                <p style="font-weight:bolder;white-space:nowrap"> 总共<span class="outofsync syncing">(未同步)</span> </p>
+               </div> 
+               <div class="panel-controls"> 
+                <ul> 
+                 <li><a class="portlet-help" href="#"><i class="p-b-5 fa fa-question-circle" data-title="你的账户余额" style="color:#E3223C"></i></a> </li>
+                </ul> 
+               </div> 
+              </div> 
+              <hr class="no-margin" /> 
+              <div class="panel-body"> 
+               <div class="total-balance" style="text-align:center"> 
+                <h3 class="semi-bold"> <span id="total-big"><span>0</span> <span class="light-red">.</span> <span class="cents">00</span> <span class="units unit">FUC</span></span> </h3>
+                <div class="clearfix"></div> 
+               </div> 
+              </div> 
+             </div> 
+             <div class="panel panel-shadow panel-default no-border" id="portlet-circular-color"> 
+              <div class="panel-heading"> 
+               <div class="panel-title"> 
+                <p style="font-weight:bolder">余额 </p>
+               </div> 
+               <div class="panel-controls"> 
+                <ul> 
+                 <li><a class="portlet-help" href="#"><i class="p-b-5 fa fa-question-circle" data-title="余额清空" style="color:#E3223C"></i></a> </li>
+                </ul> 
+               </div> 
+              </div> 
+              <hr class="no-margin" /> 
+              <div style="min-height:247px"> 
+               <div class="wallet"> 
+                <table class="table table-condensed table-hover" id="balances"> 
+                 <tbody>
+                  <tr> 
+                   <td class="p-l-20 text-left font-montserrat all-caps fs-12 b-r b-dashed b-grey">公共 </td>
+                   <td class="p-l-20 balance text-left">0.00 </td>
+                  </tr>
+                  <tr> 
+                   <td class="p-l-20 text-left font-montserrat all-caps fs-12 b-r b-dashed b-grey">私有 </td>
+                   <td class="p-l-20 shadow_balance text-left">0.00 </td>
+                  </tr>
+                  <tr> 
+                   <td class="p-l-20 text-left font-montserrat all-caps fs-12 b-r b-dashed b-grey">可用 </td>
+                   <td class="p-l-20 text-left" id="reserved">0.00 </td>
+                  </tr>
+                  <tr> 
+                   <td class="p-l-20 text-left font-montserrat all-caps fs-12 b-r b-dashed b-grey">权益 </td>
+                   <td class="p-l-20 text-left" id="stake">0.00 </td>
+                  </tr>
+                  <tr> 
+                   <td class="p-l-20 text-left font-montserrat all-caps fs-12 b-r b-dashed b-grey">未确认 </td>
+                   <td class="p-l-20 text-left" id="unconfirmed">0.00 </td>
+                  </tr>
+                  <tr> 
+                   <td class="p-l-20 text-left font-montserrat all-caps fs-12 b-r b-dashed b-grey">未成熟 </td>
+                   <td class="p-l-20 text-left" id="immature">0.00 </td>
+                  </tr>
+                 </tbody>
+                </table> 
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+            <div class="col-md-6"> 
+             <div class="panel panel-shadow panel-default no-border" id="portlet-linear-color"> 
+              <div class="panel-heading"> 
+               <div class="panel-title"> 
+                <p style="font-weight:bolder">最近交易 </p>
+               </div> 
+               <div class="panel-controls"> 
+                <ul> 
+                 <li><a class="portlet-help" href="#"><i class="p-b-5 fa fa-question-circle" data-title="最近的交易(包括挖矿，权益和交易)" style="color:#E3223C"></i></a> </li>
+                </ul> 
+               </div> 
+              </div> 
+              <hr class="no-margin" /> 
+              <div style="height:424px"> 
+               <table class="table table-condensed table-hover" id="recenttxns"> 
+                <thead> 
+                 <tr> 
+                  <th class="sorting" data-sort-initial="ascending" data-toggle="true">
+                   <center>
+                    类型
+                   </center> </th>
+                  <th class="sorting" data-hide="phone,tablet">
+                   <center>
+                    数量
+                   </center> </th>
+                  <th class="sorting" data-hide="phone">
+                   <center>
+                    日期
+                   </center> </th>
+                 </tr>
+                </thead> 
+               </table> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+      </article> 
+      <article id="market" class="bg-white" style="background-color:#fff"> 
+       <div class="bg-white" style="position:fixed;top:0;bottom:0;left:0;right:0"></div> 
+       <div class="page-content-wrapper"> 
+        <nav class="navbar navbar-default nav-sub-menu p-t-10 p-r-35 p-l-35" style="min-height:75px;margin-bottom:0!important" role="navigation"> 
+         <div class="pull-left"> 
+          <h4 style="font-weight:bolder">市场</h4> 
+         </div> 
+         <div class="pull-right"></div> 
+         <div class="container-fluid"> 
+          <div class="navbar-header"></div> 
+         </div> 
+        </nav> 
+        <div class="row"> 
+         <div class="col-sm-12 bg-white" style="height:100px%;min-height:100%"> 
+          <div class="col-sm-6 col-sm-offset-3 bg-white p-t-30" style="text-align:center;padding-top:100px"> 
+           <img src="qrc:///assets/img/shoppingcart.png" /> 
+           <h1>商城</h1> 
+           <p>正在研发，敬请等待。</p>
+          </div> 
+
+          <div class="col-sm-6 bg-white" style="text-align:right;padding-top:100px;display:none;">
+           <h5>如果有感兴趣的个人或者商家，请与我们取得联系</h5>
+           <p style="opacity:6"> 联系我们 <a href="JavaScript:void(0);" target="_self"></a> (<a href="javascript:void(0)" target="_self">马上联系</a>) </p>
+          </div> 
+          <div class="col-sm-6 bg-white m-t-130" style="padding-top:100px;display:none;">
+
+           <h5>捐助</h5> 
+           <p style="opacity:6"> <a href="javascript:sendPage.addRecipientDetail('SQPnntw7aDZXcqiXRyhvd16hApx39S2haX', '支点币开发团队', '努力工作，早日上市!', 500)">SQPnntw7aDZXcqiXRyhvd16hApx39S2haX</a> </p>
+           <p style="opacity:6"> <a href="bitcoin:1GiosBkSpN8RS9pm1kgZU8AZUBEnLKYFem&amp;label=FUC%20Dev%20Fund">1GiosBkSpN8RS9pm1kgZU8AZUBEnLKYFem</a> </p>
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+      </article> 
+     </div> 
+     <article id="send"> 
+      <div class="page-content-wrapper"> 
+       <nav class="navbar navbar-default nav-sub-menu p-t-10 p-b-10 p-r-35 p-l-35" style="min-height:75px" role="navigation"> 
+        <div class="pull-left"> 
+         <h4 style="font-weight:bolder">发送</h4> 
+        </div> 
+        <div class="p-t-10 pull-right show-advanced-controls"> 
+         <button class="btn btn-default btn-cons" onclick="$(this).toggleClass(&quot;active&quot;),sendPage.changeTransactionType()"> <i class="fa fa-wrench"></i> 高级选项 </button> 
+        </div> 
+        <div class="p-t-10 pull-right show-coin-control"> 
+         <button class="btn btn-default btn-cons" onclick="$(this).toggleClass(&quot;active&quot;),sendPage.toggleCoinControl()"> <i class="fa fa-repeat"></i> 币控 </button> 
+        </div> 
+        <div class="container-fluid"> 
+         <div class="navbar-header"></div> 
+        </div> 
+       </nav> 
+       <div class="row m-t-45 m-b-35 m-l-35 m-r-35"> 
+        <div class="panel full-width"> 
+         <form autocomplete="off" class="form-horizontal" id="form-work" name="form-work"> 
+          <ul class="nav nav-tabs nav-tabs-simple nav-tabs-simple-bg"> 
+           <li class="active" style="font-weight:bolder;color:#333"><a data-toggle="tab" href="#send-main">支付</a> </li>
+           <li style="font-weight:bolder;color:#333"><a data-toggle="tab" href="#send-balance">转移</a> </li>
+          </ul> 
+          <div class="tab-content"> 
+           <div id="sendoptions"> 
+            <div id="coincontrol"> 
+             <div class="form-group" style="border-bottom:1px solid #F0F1F3"> 
+              <label class="col-sm-3 p-l-20 control-label"><a href="#" onclick="bridge.openCoinControl()">输入</a> <a href="#"><i class="p-b-5 fa fa-question-circle" data-title="选择发送" style="color:#626262"></i></a></label> 
+              <div class="col-sm-9"> 
+               <div class="row"> 
+                <div id="coincontrol_auto">
+                 自动选择
+                </div> 
+                <div id="coincontrol_labels" style="display:none"> 
+                 <span style="white-space:nowrap"><label class="coincontrol_inputs" for="coincontrol_quantity">数量:</label><span id="coincontrol_quantity"></span> </span>
+                 <span style="white-space:nowrap"><label class="coincontrol_inputs" for="coincontrol_amount">总额:</label><span id="coincontrol_amount"></span> </span>
+                 <span style="white-space:nowrap"><label class="coincontrol_inputs" for="coincontrol_fee">费用:</label><span id="coincontrol_fee"></span> </span>
+                 <span style="white-space:nowrap"><label class="coincontrol_inputs" for="coincontrol_afterfee">除去费用:</label><span id="coincontrol_afterfee"></span> </span>
+                 <span style="white-space:nowrap"><label class="coincontrol_inputs" for="coincontrol_bytes">字节:</label><span id="coincontrol_bytes"></span> </span>
+                 <span style="white-space:nowrap"><label class="coincontrol_inputs" for="coincontrol_priority">优先级:</label><span id="coincontrol_priority"></span> </span>
+                 <span style="white-space:nowrap"><label class="coincontrol_inputs" for="coincontrol_low">输出:</label><span id="coincontrol_low"></span> <span style="white-space:nowrap"><label class="coincontrol_inputs" for="coincontrol_change">改变:</label><span id="coincontrol_change"></span></span></span> 
+                </div> 
+               </div> 
+              </div> 
+             </div> 
+             <div class="form-group" style="border-bottom:1px solid #F0F1F3"> 
+              <label class="col-sm-3 p-l-20 control-label">自定义更改地址 <a href="#"><i class="p-b-5 fa fa-question-circle" data-title="选择接收地址" style="color:#626262"></i></a> </label> 
+              <div class="col-sm-9"> 
+               <div class="row"> 
+                <div class="col-sm-9"> 
+                 <input class="form-control" id="change_address" data-title="选择接收地址" maxlength="128" oninput="base58.check(this)" placeholder="输入有效地址 (例如. SXywGBZBowrppUwwNUo1GCRDTibzJi7g2M)" /> 
+                </div> 
+                <div class="btn-group col-sm-3 sm-m-t-10"> 
+                 <a id="cust-add-lkp" data-title="从地址薄中选择" data-toggle="modal" data-target="#address-lookup-modal" href="#" onclick="addressLookup(&quot;change_address&quot;,!0)" class="btn btn-default"><i class="fa fa-book"></i> </a>
+                 <a data-title="粘贴" class="btn btn-default" onclick="paste(&quot;#change_address&quot;)"><i class="fa fa-files-o"></i> </a>
+                 <a data-title="移除" class="btn btn-default" onclick="$(&quot;#change_address&quot;).val(&quot;&quot;).css(&quot;background&quot;,&quot;&quot;).css(&quot;color&quot;,&quot;&quot;)"><i class="fa fa-close"></i></a> 
+                </div> 
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+            <div class="form-group"> 
+             <label class="col-sm-3 control-label option p-l-20 recipient" for="from_account_public">转账账户 <a href="#"><i class="p-b-5 fa fa-question-circle" data-title="从公用或者私人账户转出" style="color:#626262"></i></a></label> 
+             <div class="col-sm-9"> 
+              <div class="option"> 
+               <div id="from_account_group" class="radio radio-success"> 
+                <input id="from_account_public" name="transaction_type_from" type="radio" value="public" checked="" />
+                <label for="from_account_public">公用</label>
+                <input id="from_account_private" name="transaction_type_from" type="radio" value="private" />
+                <label for="from_account_private">私人</label>
+                <span data-title="Current spendable send payment balance"><b>余额:</b> <span id="spend_sdc"><span class="balance">0.00</span> <span class="unit">FUC</span> </span><span id="spend_shadow"><span class="shadow_balance">0.00</span> <span class="unit">FUC</span> </span></span>
+                <span id="tx_ringsize"><label class="form-controlring_size m-r-10" for="ring_size">环大小:</label><input class="form-control-options-page ring_size input_box" id="ring_size" max="32" min="3" step="1" type="number" value="16" /></span> 
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+            <div class="form-group advanced_controls"> 
+             <label class="col-sm-3 control-label option p-l-20 recipient" for="to_account_public">接收账户<a href="#"><i class="p-b-5 fa fa-question-circle" data-title="Send to public or private" style="color:#626262"></i></a></label> 
+             <div class="col-sm-9"> 
+              <div class="option"> 
+               <div id="to_account_group" class="radio radio-success"> 
+                <input id="to_account_public" name="transaction_type_to" type="radio" value="public" checked="" />
+                <label for="to_account_public">公用</label>
+                <input id="to_account_private" name="transaction_type_to" type="radio" value="private" />
+                <label for="to_account_private">私人</label>
+                <span id="to_balance" data-title="Current spendable balance to account"><b>余额:</b> <span id="to_shadow"><span class="shadow_balance">0.00</span> <span class="unit">FUC</span> </span><span id="to_sdc"><span class="balance">0.00</span> <span class="unit">FUC</span></span></span>
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <div class="tab-pane active" id="send-main"> 
+            <div class="row"> 
+             <div class="col-md-12"> 
+              <div id="recipients"></div> 
+              <div id="recipient-template" class="recipient"> 
+               <div class="form-group"> 
+                <label class="col-sm-3 p-l-20 control-label">接收账户 <a href="#"><i class="p-b-5 fa fa-question-circle" data-title="The address to send the payment to" style="color:#626262"></i></a> </label> 
+                <div class="col-sm-9"> 
+                 <div class="row"> 
+                  <div class="col-sm-6"> 
+                   <input class="form-control pay_to" data-title="接收地址" placeholder="接收地址" maxlength="128" oninput="base58.check(this)" onchange="$(&quot;#recipient-template .pay_to_label&quot;).val(bridge.getAddressLabel(this.value))" /> 
+                  </div> 
+                  <div class="col-sm-3"> 
+                   <input class="form-control pay_to_label" data-title="为该地址输入一个标签" placeholder="输入标签" maxlength="128" /> 
+                  </div> 
+                  <div class="btn-group col-sm-3 sm-m-t-10"> 
+                   <a data-title="从地址薄中选择" data-toggle="modal" data-target="#address-lookup-modal" href="#" onclick="addressLookup(&quot;recipient-template .pay_to,recipient-template .pay_to_label&quot;,!1)" class="btn btn-default"><i class="fa fa-book"></i> </a>
+                   <a data-title="粘贴" class="btn btn-default" onclick="paste(&quot;#recipient-template .pay_to&quot;)"><i class="fa fa-files-o"></i> </a>
+                   <a data-title="移除" class="btn btn-default" onclick="sendPage.removeRecipient(&quot;#recipient-template.recipient&quot;)"><i class="fa fa-close"></i></a> 
+                  </div> 
+                 </div> 
+                </div> 
+               </div> 
+               <div class="form-group" id="show_nar" style="border-bottom:1px solid #F0F1F3"> 
+                <label class="col-sm-3 control-label option p-l-20 recipient" for="recipient-template-narration" title="Narration:">留言 <a href="#"><i class="p-b-5 fa fa-question-circle" data-title="给接收人一段简短的留言" style="color:#626262"></i></a> </label> 
+                <div class="col-sm-9"> 
+                 <div class="row"> 
+                  <div class="col-sm-9"> 
+                   <input class="form-control narration" id="recipient-template-amount-narration" maxlength="24" data-title="为这笔交易添加备注 (最大24个字符)" placeholder="为这笔交易添加备注 (最大24个字符)" /> 
+                  </div> 
+                  <div class="col-sm-3"></div> 
+                 </div> 
+                </div> 
+               </div> 
+               <div class="form-group"> 
+                <label class="recipient" for="recipient-template-amount">数量 <a href="#"><i class="p-b-5 fa fa-question-circle" data-title="发送数量" style="color:#626262"></i></a> </label> 
+                <div class="col-sm-9"> 
+                 <div class="row"> 
+                  <div class="col-sm-9"> 
+                   <input class="form-control amount" id="recipient-template-amount" placeholder="0.00000000" step="0.01" type="number" value="0.00000000" onfocus="invalid($(this),!0)" onchange="unit.parse(this,$(&quot;#recipient-template .unit&quot;).val()),sendPage.updateCoinControl()" /> 
+                  </div> 
+                  <select class="unit select-drop-down" style="margin-left:7px" onchange="unit.format(&quot;#recipient-template .amount&quot;,$(this).val())"><option value="0" title="FulcraCoin">FUC </option><option value="1" title="Milli-FulcraCoin (1 / 1000)">mFUC </option><option value="2" title="Micro-FulcraCoin (1 / 1000000)">&micro;FUC </option><option value="3" title="FulcraCoinshi (1 / 100000000)">FulcraCoinshi</option></select>
+                 </div> 
+                </div> 
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <div class="tab-pane" id="send-balance"> 
+            <div class="row"> 
+             <div class="col-md-12"> 
+              <div class="form-group advanced_controls"> 
+               <label class="col-sm-3 p-l-20 control-label">支付账户<a href="#"><i class="p-b-5 fa fa-question-circle" data-title="支付账户" style="color:#626262"></i></a> </label> 
+               <div class="col-sm-9"> 
+                <div class="row"> 
+                 <div class="col-sm-6"> 
+                  <input class="form-control pay_to" data-title="支付地址" placeholder="支付地址" maxlength="128" oninput="base58.check(this)" onchange="$(&quot;#send-balance .pay_to_label&quot;).text(bridge.getAddressLabel(this.value))" /> 
+                 </div> 
+                 <div class="col-sm-3"> 
+                  <span class="form-control pay_to_label" data-title="标签" style="overflow:hidden;white-space:nowrap">(无标签)</span> 
+                 </div> 
+                 <div class="btn-group col-sm-3 sm-m-t-10"> 
+                  <a data-title="从地址薄中选择" data-toggle="modal" data-target="#address-lookup-modal" href="#" onclick="addressLookup(&quot;send-balance .pay_to,send-balance .pay_to_label&quot;,!0,&quot;Stealth&quot;)" class="btn btn-default"><i class="fa fa-book"></i> </a>
+                  <a data-title="粘贴" class="btn btn-default" onclick="paste(&quot;#send-balance .pay_to&quot;)"><i class="fa fa-files-o"></i></a> 
+                 </div> 
+                </div> 
+               </div> 
+              </div> 
+              <div class="form-group" style="border-bottom:1px solid #F0F1F3"> 
+               <label class="recipient" for="send-balance-amount">数量 <a href="#"><i class="p-b-5 fa fa-question-circle" data-title="支付数量" style="color:#626262"></i></a></label> 
+               <div class="col-sm-9"> 
+                <div class="row"> 
+                 <div class="col-sm-9"> 
+                  <input id="send-balance-amount" class="form-control amount" placeholder="0.00000000" step="0.01" type="number" value="0.00000000" onfocus="invalid($(this),!0)" onchange="unit.parse(this,$(&quot;#send-balance .unit&quot;).val()),sendPage.updateCoinControl()" /> 
+                 </div> 
+                 <select class="unit select-drop-down" style="margin-left:7px" onchange="unit.format(&quot;#send-balance .amount&quot;,$(this).val())"><option value="0" title="FulcraCoin">FUC </option><option value="1" title="Milli-FulcraCoin (1 / 1000)">mFUC </option><option value="2" title="Micro-FulcraCoin (1 / 1000000)">&micro;FUC </option><option value="3" title="FulcraCoinshi (1 / 100000000)">FulcraCoinshi</option></select>
+                </div> 
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+          </div> 
+          <div class="pull-right m-r-15 m-t-10 m-b-25"> 
+           <a id="add_recipient" class="btn btn-default btn-cons" data-title="Send to multiple recipients at once" onclick="sendPage.addRecipient()">添加发送人</a> 
+           <a class="btn btn-default btn-cons" onclick="sendPage.clearRecipients()"><i class="fa fa-close"></i> 删除所有 </a>
+           <a class="btn btn-default btn-cons" href="javascript:sendPage.suggestRingSize();" id="suggest_ring_size"><i class="fa fa-calculator"></i> 建议环大小</a> 
+           <a class="btn btn-primary btn-cons" onclick="sendPage.sendCoins()">发送 <i class="fa fa-arrow-right"></i></a> 
+          </div> 
+          <div class="clearfix"></div> 
+         </form> 
+        </div> 
+       </div> 
+      </div> 
+     </article> 
+     <article id="receive"> 
+      <div class="page-content-wrapper"> 
+       <nav class="navbar navbar-default nav-sub-menu p-t-10 p-b-10 p-r-35 p-l-35" style="min-height:75px" role="navigation"> 
+        <div class="pull-left"> 
+         <h4 style="font-weight:bolder">接收</h4> 
+        </div> 
+        <div class="p-t-10 pull-right"> 
+         <div class="form-group"> 
+          <select class="select-drop-down m-l-10" id="filter-addresstype"><option selected="" title="Type.." value="">通过类型过滤 </option><option title="Normal" value="Normal">Normal </option><option title="Stealth" value="Stealth">Stealth </option><option title="BIP32" value="BIP32">BIP32</option></select> 
+         </div> 
+        </div> 
+        <div class="p-t-10 pull-right"> 
+         <div class="form-group"> 
+          <input id="receive-filter" style="display:none" /> 
+          <input class="form-control" style="width:200px" id="filter-address" placeholder="通过标签和地址搜索" /> 
+         </div> 
+        </div> 
+        <div class="container-fluid"> 
+         <div class="navbar-header"></div> 
+        </div> 
+       </nav> 
+       <div class="row m-t-45 m-b-35 m-l-35 m-r-35"> 
+        <div class="panel full-width"> 
+         <table cellspacing="0" class="footable shadow table table-hover" data-filter="#receive-filter" data-page-size="20" id="receive-table" width="100%" style="border-bottom:1px solid rgba(230,230,230,.7)"> 
+          <thead> 
+           <tr> 
+            <th style="padding-left:18px" data-sort-initial="true" data-toggle="true">标签 </th>
+            <th data-hide="phone">地址 </th>
+            <th data-hide="phone" data-sort-ignore="true">公钥 </th>
+            <th data-hide="phone">类型 </th>
+           </tr>
+          </thead>
+          <tbody> 
+          </tbody>
+          <tfoot> 
+           <tr> 
+            <td colspan="4">
+             <div class="pagination pager hide-if-no-paging"></div> </td>
+           </tr>
+          </tfoot>
+         </table> 
+         <div class="center-div m-t-25 m-b-25"> 
+          <a class="btn btn-default btn-cons" data-target="#qrcode-modal" data-toggle="modal" onclick="showQRCode($(&quot;#receive .footable .selected .address&quot;).text(),$(&quot;#receive .footable .selected .label2&quot;).attr(&quot;data-value&quot;))"><i class="fa fa-qrcode"></i>二维码</a> 
+          <a class="btn btn-default btn-cons" data-target="#add-address-modal" data-toggle="modal" onclick="clearRecvAddress(),$(&quot;#add-rcv-address&quot;).show(),$(&quot;#add-send-address&quot;).hide()"><i class="fa fa-plus"></i> 新地址</a> 
+          <a class="btn btn-default btn-cons" href="javascript:copy('#receive .footable .selected .address');"><i class="fa fa-copy"></i> 复制地址</a> 
+          <a class="btn btn-default btn-cons" id="sign-message-button" data-target="#verify-sign-message-modal" data-toggle="modal" onclick="$(&quot;#sign-href&quot;).click(),$(&quot;#sign-address&quot;).val($(&quot;#receive .footable .selected .address&quot;).text())"><i class="fa fa-pencil-square-o"></i> 签名消息</a> 
+         </div> 
+         <div class="clearfix"></div> 
+        </div> 
+       </div> 
+      </div> 
+     </article> 
+     <article id="transactions"> 
+      <div class="page-content-wrapper"> 
+       <nav class="navbar navbar-default nav-sub-menu p-t-10 p-b-10 p-r-35 p-l-35" style="min-height:75px" role="navigation"> 
+        <div class="pull-left"> 
+         <h4 style="font-weight:bolder">交易</h4> 
+        </div> 
+        <div class="p-t-10 pull-right"> 
+         <div class="form-group"> 
+          <input class="form-control" id="filter-transaction" placeholder="搜索交易" /> 
+         </div> 
+        </div> 
+        <div class="container-fluid"> 
+         <div class="navbar-header"></div> 
+        </div> 
+       </nav> 
+       <div class="row m-t-45 m-b-35 m-l-35 m-r-35"> 
+        <div class="panel full-width"> 
+         <table class="footable shadow table table-hover" data-page-size="20" data-limit-navigation="5" id="transactions" data-filter="#filter-transaction" data-manual="true" width="100%" style="border-bottom:1px solid rgba(230,230,230,.7)"> 
+          <thead> 
+           <tr> 
+            <th data-type="numeric" data-sort-initial="descending" data-title="交易的时间">时间 </th>
+            <th data-hide="phone" style="text-align:center;padding-left:12px" data-toggle="true" data-type="numeric" data-title="交易状态，鼠标移动上面显示确认次数"> </th>
+            <th data-hide="phone" data-title="交易类型">类型 </th>
+            <th data-title="接收地址">地址 </th>
+            <th data-hide="phone" data-title="留言">留言 </th>
+            <th data-type="numeric" data-title="账户增加或者减少的数量">数量 </th>
+           </tr>
+          </thead>
+          <tbody> 
+          </tbody>
+          <tfoot> 
+           <tr> 
+            <td colspan="6">
+             <div class="pagination pager hide-if-no-paging"></div> </td>
+           </tr>
+          </tfoot>
+         </table> 
+        </div> 
+       </div> 
+      </div> 
+     </article> 
+     <article id="addressbook"> 
+      <div class="page-content-wrapper"> 
+       <nav class="navbar navbar-default nav-sub-menu p-t-10 p-b-10 p-r-35 p-l-35" style="min-height:75px" role="navigation"> 
+        <div class="pull-left"> 
+         <h4 style="font-weight:bolder">地址簿</h4> 
+        </div> 
+        <div class="p-t-10 pull-right"> 
+         <div class="form-group"> 
+          <input class="form-control" style="width:200px" id="filter-addressbook" placeholder="通过标签和地址搜索" /> 
+         </div> 
+        </div> 
+        <div class="container-fluid"> 
+         <div class="navbar-header"></div> 
+        </div> 
+       </nav> 
+       <div class="row m-t-45 m-l-35 m-r-35"> 
+        <div class="panel full-width bg-transparent"> 
+         <div class="panel full-width"> 
+          <table cellspacing="0" class="footable shadow table table-hover" data-filter="#filter-addressbook" data-page-size="20" width="100%" style="border-bottom:1px solid rgba(230,230,230,.7)"> 
+           <thead> 
+            <tr> 
+             <th style="padding-left:18px" data-sort-initial="true" data-toggle="true">标签 </th>
+             <th data-hide="phone">地址 </th>
+             <th data-hide="phone">公钥</th>
+             <th data-hide="phone">类型 </th>
+            </tr>
+           </thead>
+           <tbody> 
+           </tbody>
+           <tfoot> 
+            <tr> 
+             <td colspan="3">
+              <div class="pagination pager hide-if-no-paging"></div> </td>
+            </tr>
+           </tfoot>
+          </table> 
+          <div class="center-div m-t-25 m-b-25"> 
+           <a class="btn btn-default btn-cons" data-target="#add-address-modal" data-toggle="modal" onclick="$(&quot;#add-rcv-address&quot;).hide(),clearSendAddress(),$(&quot;#add-send-address&quot;).show()"><i class="fa fa-plus"></i> 新地址</a> 
+           <a class="btn btn-default btn-cons" href="javascript:copy('#addressbook .footable .selected .address');"><i class="fa fa-copy"></i> 复制地址</a> 
+           <a class="btn btn-default btn-cons" data-target="#qrcode-modal" data-toggle="modal" onclick="showQRCode($(&quot;#addressbook .footable .selected .address&quot;).text(),$(&quot;#addressbook .footable .selected .label&quot;).attr(&quot;data-value&quot;))"><i class="fa fa-qrcode"></i>二维码</a> 
+           <a class="btn btn-default btn-cons" data-target="#verify-sign-message-modal" data-toggle="modal" onclick="$(&quot;#verify-href&quot;).click(),$(&quot;#verify-address&quot;).val($(&quot;#addressbook .footable .selected .address&quot;).text())"><i class="fa fa-check"></i>签名消息</a> 
+           <a class="btn btn-default btn-cons" href="#filter-addressbook" onclick="var e=$(&quot;#addressbook .footable .selected .address&quot;);bridge.deleteAddress(e.text())&amp;&amp;e.closest(&quot;tr&quot;).remove()"><i class="fa fa-close"></i> 删除</a> 
+          </div> 
+          <div class="clearfix"></div> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </article> 
+     <div class="modal fade stick-up" id="new-contact-modal" tabindex="-1" role="dialog" aria-hidden="true"> 
+      <div class="modal-dialog"> 
+       <div class="modal-content p-b-25" style="background:#fff"> 
+        <div class="modal-header clearfix text-left"> 
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="pg-close fs-20"></i> </button> 
+         <h5 class="p-l-10" style="border-bottom:1px solid #F0F1F3">开始的私人聊天</h5> 
+         <div class="form-group"> 
+          <div class="col-sm-12"> 
+           <label for="new-contact-address">地址:</label> 
+           <div class="row"> 
+            <div class="col-sm-8"> 
+             <input id="new-contact-address" class="recipient form-control input_box" data-title="输入支付地址(例如. SXywGBZBowrppUwwNUo1GCRDTibzJi7g2M)" placeholder="输入地址 (例如. SXywGBZBowrppUwwNUo1GCRDTibzJi7g2M)" onchange="base58.check(this)&amp;&amp;($(&quot;#new-contact-name&quot;).val(bridge.getAddressLabel(this.value)),$(&quot;#new-contact-pubkey&quot;).val(bridge.getPubKey(this.value)).change())" maxlength="128" oninput="base58.check(this),this.value.trim()" /> 
+            </div> 
+            <div class="col-sm-4"> 
+             <div class="btn-group"> 
+              <a class="btn btn-default" data-title="从地址薄中选择" data-toggle="modal" data-target="#address-lookup-modal" href="#" onclick="addressLookup(&quot;new-contact-address,new-contact-name&quot;,!1,&quot;Normal&quot;)"><i class="fa fa-book"></i> </a>
+              <a class="btn btn-default" data-title="粘贴" onclick="paste(&quot;#new-contact-address&quot;)"><i class="fa fa-files-o"></i> </a>
+              <a class="btn btn-default" data-title="移除" onclick="$(&quot;#new-contact-address&quot;).val(&quot;&quot;).css(&quot;background&quot;,&quot;&quot;).css(&quot;color&quot;,&quot;&quot;)"><i class="fa fa-times"></i></a> 
+             </div> 
+            </div> 
+           </div> 
+          </div> 
+         </div> 
+         <div class="form-group"> 
+          <div class="col-sm-12 p-t-15"> 
+           <label for="new-contact-name">名称:</label> 
+           <div class="row"> 
+            <div class="col-sm-12"> 
+             <input id="new-contact-name" class="recipient form-control input_box" data-title="为该地址输入一个标签并增加到地址簿中" placeholder="为该地址输入一个标签并增加到地址簿中" maxlength="128" /> 
+            </div> 
+           </div> 
+          </div> 
+         </div> 
+         <div class="form-group"> 
+          <div class="col-sm-12 p-t-15"> 
+           <label for="new-contact-pubkey">公钥:</label> 
+           <div class="row"> 
+            <div class="col-sm-12"> 
+             <input id="new-contact-pubkey" class="recipient form-control input_box" data-title="输入公钥" placeholder="输入公钥" oninput="base58.check(this)" onchange="invalid($(this),bridge.setPubKey($(&quot;#new-contact-address&quot;).val(),this.value))" /> 
+            </div> 
+           </div> 
+          </div> 
+         </div> 
+         <div class="pull-right m-r-10 m-t-25"> 
+          <a class="btn btn-danger btn-cons" href="#" onclick="newConversation()">开始聊天<i class="fa fa-check"></i></a> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="modal fade stick-up" id="new-group-modal" tabindex="-1" role="dialog" aria-hidden="true"> 
+      <div class="modal-dialog"> 
+       <div class="modal-content p-b-25" style="background:#fff"> 
+        <div class="modal-header clearfix text-left"> 
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="pg-close fs-20"></i> </button> 
+         <h5 class="p-l-10" style="border-bottom:1px solid #F0F1F3">开始群聊</h5> 
+         <div class="form-group"> 
+          <div class="col-sm-8 p-t-15"> 
+           <label for="new-group-name">群名称:</label>
+           <input id="new-group-name" class="recipient form-control input_box" data-title="为这个群添加标签" placeholder="为这个群添加标签" maxlength="128" /> 
+          </div> 
+          <div class="col-sm-4 p-t-15"> 
+           <div class="pull-right m-t-25"> 
+            <a class="btn btn-danger" onclick="createGroupChat()">创建群 <i class="fa fa-check"></i> </a> 
+           </div> 
+          </div> 
+         </div> 
+         <br /> 
+         <br /> 
+         <h5 class="p-l-10" style="border-bottom:1px solid #F0F1F3">邀请好友</h5> 
+         <div class="form-group"> 
+          <div class="col-sm-12 p-t-15"> 
+           <label for="filter-new-group">搜索</label>
+           <input class="form-control input_box" id="filter-new-group" placeholder="通过标签和地址搜索" /> 
+          </div> 
+         </div> 
+         <div class="form-group"> 
+          <div class="col-sm-12 p-t-15"> 
+           <div class="row"> 
+            <div class="col-sm-12"> 
+             <div class="panel full-width bg-transparent"> 
+              <div class="panel full-width"> 
+               <table cellspacing="0" class="footable shadow table table-hover" data-filter="#filter-new-group" data-page-size="20" width="100%" style="border-bottom:1px solid rgba(230,230,230,.7)"> 
+                <thead> 
+                 <tr> 
+                  <th style="padding-left:18px" data-sort-initial="true" data-toggle="true">标签 </th>
+                  <th data-hide="phone">地址 </th>
+                  <th data-hide="phone">邀请 </th>
+                 </tr>
+                </thead>
+                <tbody id="group-modal-tbody"> 
+                </tbody>
+                <tfoot> 
+                 <tr> 
+                  <td colspan="3">
+                   <div class="pagination pager hide-if-no-paging"></div> </td>
+                 </tr>
+                </tfoot>
+               </table> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="modal fade stick-up" id="invite-to-group-modal" tabindex="-1" role="dialog" aria-hidden="true"> 
+      <div class="modal-dialog"> 
+       <div class="modal-content p-b-25" style="background:#fff"> 
+        <div class="modal-header clearfix text-left"> 
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="pg-close fs-20"></i> </button> 
+         <h5 class="p-l-10" style="border-bottom:1px solid #F0F1F3">邀请好友到群</h5> 
+         <div class="form-group"> 
+          <div class="col-sm-8 p-t-15"> 
+           <label for="existing-group-name">群名称:</label>
+           <input id="existing-group-name" class="recipient form-control input_box" data-title="为这个群添加标签" placeholder="为这个群添加标签" maxlength="128" disabled="" /> 
+          </div> 
+          <div class="col-sm-4 p-t-15"> 
+           <div class="pull-right m-t-25"> 
+            <a class="btn btn-danger" onclick="submitInviteModal()">邀请好友到群 <i class="fa fa-check"></i> </a> 
+           </div> 
+          </div> 
+         </div> 
+         <div class="form-group"> 
+          <div class="col-sm-12 p-t-15"> 
+           <label for="filter-new-group">搜索</label>
+           <input class="form-control input_box" id="filter-existing-group" placeholder="通过标签和地址搜索" /> 
+          </div> 
+         </div> 
+         <div class="form-group"> 
+          <div class="col-sm-12 p-t-15"> 
+           <div class="row"> 
+            <div class="col-sm-12"> 
+             <div class="panel full-width bg-transparent"> 
+              <div class="panel full-width"> 
+               <table cellspacing="0" class="footable shadow table table-hover" data-filter="#filter-existing-group" data-page-size="20" width="100%" style="border-bottom:1px solid rgba(230,230,230,.7)"> 
+                <thead> 
+                 <tr> 
+                  <th style="padding-left:18px" data-sort-initial="true" data-toggle="true">标签 </th>
+                  <th data-hide="phone">地址 </th>
+                  <th data-hide="phone">邀请 </th>
+                 </tr>
+                </thead>
+                <tbody id="invite-modal-tbody"> 
+                </tbody>
+                <tfoot> 
+                 <tr> 
+                  <td colspan="3">
+                   <div class="pagination pager hide-if-no-paging"></div> </td>
+                 </tr>
+                </tfoot>
+               </table> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <div id="quickview" class="quickview-wrapper" data-framework="quickview" style="z-index:99999"> 
+      <ul class="nav nav-tabs"> 
+       <li id="quickview-private-tab" onclick="contactScroll.refresh()"><a href="#quickview-private" data-toggle="tab"><i class="fa fa-user"></i> 好友消息</a> </li>
+       <li id="quickview-group-tab" onclick="contactGroupScroll.refresh()"><a href="#quickview-group" data-toggle="tab"><i class="fa fa-users"></i> 群消息</a> </li>
+       <li id="quickview-book-tab"><a href="#quickview-book" data-toggle="tab"><i class="fa fa-bars"></i> 地址簿</a> </li>
+      </ul> 
+      <a class="btn-link quickview-toggle" data-toggle-element="#quickview" data-toggle="quickview"><i class="pg-close"></i></a> 
+      <div class="tab-content"> 
+       <div class="tab-pane fade in active no-padding" id="quickview-private"> 
+        <div class="view-port clearfix quickview-private" id="note-views"> 
+         <a href="#" data-target="#new-contact-modal" data-toggle="modal" id="start-conversation"><i class="fa fa-plus margin-right-10"></i>开始聊天</a> 
+         <div class="view bg-white" style="height:auto"> 
+          <div id="contact-list" class="contact-list"> 
+           <ul></ul> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+       <div class="tab-pane fade no-padding" id="quickview-group"> 
+        <div class="view-port clearfix" id="alerts"> 
+         <a href="#" data-target="#new-group-modal" data-toggle="modal" id="start-conversation"><i class="fa fa-plus margin-right-10"></i> 开始群聊</a> 
+         <div id="group-invite-list"></div> 
+         <div class="view bg-white"> 
+          <div id="contact-group-list" class="contact-list"> 
+           <ul></ul> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+       <div class="tab-pane fade no-padding" id="quickview-book"> 
+        <div class="view-port clearfix" id="alerts"> 
+         <div class="view bg-white"> 
+          <div id="contact-book-list" class="contact-list"> 
+           <ul></ul> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <article id="messages"> 
+      <nav class="navbar navbar-default nav-sub-menu p-t-10 p-b-10 p-r-35 p-l-35" style="min-height:75px;margin-bottom:0" role="navigation"> 
+       <div class="pull-left chat-header"> 
+        <h4 style="font-weight:bolder" id="chat-header" data-value="">聊天</h4> 
+       </div> 
+       <div id="leave-group-btn" class="p-t-10 p-r-10 pull-right" style="display:none"> 
+        <a href="#" class="btn btn-default btn-cons" data-toggle="quickview" data-toggle-element="#quickview"><i class="fa fa-sign-out"></i>退出群</a> 
+       </div> 
+       <div id="invite-group-btn" class="p-t-10 p-r-10 pull-right" style="display:none"> 
+        <a href="#" class="btn btn-default btn-cons" data-toggle="modal" data-target="#invite-to-group-modal" onclick="openInviteModal()"><i class="fa fa-user-plus"></i> 邀请</a> 
+       </div> 
+       <div class="container-fluid"> 
+        <div class="navbar-header"></div> 
+       </div> 
+      </nav> 
+      <div class="row chat-body" style="margin-left:0;margin-right:0"> 
+       <div class="panel full-width bg-transparent" style="margin-bottom:0;padding:0"> 
+        <div class="panel full-width bg-transparent" style="margin-bottom:0;padding:0"> 
+         <div class="contact-discussion"> 
+          <ul></ul> 
+         </div> 
+        </div> 
+       </div> 
+       <div class="answer"> 
+        <form action="" class="text-box" method="="> 
+         <a class="bold button button-icon" href="#" onclick="editorCommand(&quot;**&quot;,&quot;**&quot;)"><i class="fa fa-bold"></i> </a>
+         <a class="italic button button-icon" href="#" onclick="editorCommand(&quot;*&quot;,&quot;*&quot;)"><i class="fa fa-italic"></i> </a>
+         <a class="underline button button-icon" href="#" onclick="editorCommand(&quot;__&quot;,&quot;__&quot;)"><i class="fa fa-underline"></i> </a>
+         <a href="#" class="strikethrough button button-icon" onclick="editorCommand(&quot;~~&quot;,&quot;~~&quot;)"><i class="fa fa-strikethrough"></i> </a>
+         <a href="#" class="link button button-icon" onclick="editorCommand(&quot;[&quot;,&quot;](http://FulcraCoin.cash)&quot;)"><i class="fa fa-link"></i> </a>
+         <a href="#" class="image button button-icon" onclick="editorCommand(&quot;![imageinfo](&quot;,&quot;)&quot;)"><i class="fa fa-image"></i></a>
+         <label for="message-from-address"></label>
+         <select class="select-drop-down-chat" id="message-from-address" placeholder="来自地址:"></select>
+         <input id="message-to-address" type="hidden" /> 
+         <input id="pasteTo" type="hidden" /> 
+         <textarea id="message-text" rows="4" maxlength="4000" placeholder="消息类型"></textarea> 
+        </form> 
+       </div> 
+      </div> 
+     </article> 
+     <article id="chaindata"> 
+      <div class="page-content-wrapper"> 
+       <nav class="navbar navbar-default nav-sub-menu p-t-10 p-b-10 p-r-35 p-l-35" style="min-height:75px" role="navigation"> 
+        <div class="pull-left"> 
+         <h4 style="font-weight:bolder">链数据</h4> 
+        </div> 
+        <div class="p-t-10 pull-right"> 
+         <div class="form-group"> 
+          <input class="form-control" id="filter-outputs" placeholder="过滤输出" /> 
+         </div> 
+        </div> 
+        <div class="container-fluid"> 
+         <div class="navbar-header"></div> 
+        </div> 
+       </nav> 
+       <div class="row m-t-45 m-b-35 m-l-35 m-r-35"> 
+        <div class="panel full-width bg-transparent"> 
+         <div class="panel full-width" style="padding:0"> 
+          <table cellspacing="0" class="footable shadow table" data-filter="#filter-outputs" data-page="false" width="100%"> 
+           <thead> 
+            <tr> 
+             <th class="sorting" data-sort-initial="ascending" data-toggle="true" data-type="numeric" title="币值">币值</th>
+             <th class="sorting" data-hide="phone,tablet" data-type="numeric" title="拥有 (成熟) ">拥有 (成熟) </th>
+             <th class="sorting" data-hide="phone" data-type="numeric" title="系统 (成熟) ">系统 (成熟) </th>
+             <th class="sorting" data-type="numeric" title="消费">消费 </th>
+             <th class="sorting" data-hide="phone" data-type="numeric" title="链深度">链深度</th>
+            </tr>
+           </thead>
+           <tbody> 
+           </tbody>
+           <tfoot> 
+            <tr> 
+             <td colspan="5">
+              <div class="pagination pager hide-if-no-paging"></div> </td>
+            </tr>
+           </tfoot>
+          </table> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </article> 
+     <article id="blockdata"> 
+      <div class="page-content-wrapper"> 
+       <nav class="navbar navbar-default nav-sub-menu p-t-10 p-b-10 p-r-35 p-l-35" style="min-height:75px" role="navigation"> 
+        <div class="pull-left"> 
+         <h4 style="font-weight:bolder">区块浏览器</h4> 
+        </div> 
+        <div class="p-t-10 pull-right"> 
+         <a href="#" onclick="$(&quot;#filter-blocks&quot;).val(&quot;&quot;),blockExplorerPage.updateLatestBlocks()" class="btn btn-danger btn-cons btn-animated from-left fa fa-refresh"><span>刷新</span></a> 
+        </div> 
+        <div class="p-t-10 m-r-15 pull-right"> 
+         <input class="form-control" style="width:270px" id="filter-blocks" onblur="blockExplorerPage.findBlock(this.value)" onkeydown="13==event.keyCode&amp;&amp;blockExplorerPage.findBlock(this.value)" placeholder="通过Hash，高度和交易来过滤" /> 
+        </div> 
+        <div class="container-fluid"> 
+         <div class="navbar-header"></div> 
+        </div> 
+       </nav> 
+       <div class="row m-t-45 m-b-35 m-l-35 m-r-35"> 
+        <div class="panel full-width bg-transparent"> 
+         <div class="panel full-width" style="padding:0"> 
+          <table cellspacing="0" class="footable shadow table" data-filter="#filter-outputs" data-page="false" id="latest-blocks-table" width="100%"> 
+           <thead> 
+            <tr> 
+             <th class="sorting" data-sort-initial="ascending" data-toggle="true" title="Hash">Hash </th>
+             <th class="sorting" data-sort-initial="ascending" data-toggle="true" data-type="numeric" title="高度">高度 </th>
+             <th class="sorting" data-type="numeric" title="时间戳">时间戳 </th>
+             <th class="sorting" data-type="numeric" title="交易">交易 </th>
+            </tr>
+           </thead>
+           <tbody> 
+           </tbody>
+          </table> 
+          <table cellspacing="0" class="footable shadow table dataTable table-hover" id="block-txs-table" width="100%"> 
+           <thead> 
+            <tr> 
+             <th data-sort-initial="ascending" data-toggle="true" title="交易Hash">交易Hash</th>
+             <th data-sort-initial="ascending" data-toggle="true" data-type="numeric" title="输出值">输出值</th>
+            </tr>
+           </thead>
+           <tbody> 
+           </tbody>
+           <tfoot style="display:none"> 
+            <tr> 
+             <td colspan="2">
+              <div class="pagination pager hide-if-no-paging"></div> </td>
+            </tr>
+           </tfoot>
+          </table> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </article> 
+     <article id="options"> 
+      <div class="page-content-wrapper"> 
+       <nav class="navbar navbar-default nav-sub-menu p-t-10 p-b-10 p-r-35 p-l-35" style="min-height:75px" role="navigation"> 
+        <div class="pull-left"> 
+         <h4 style="font-weight:bolder">选项</h4> 
+        </div> 
+        <div class="p-t-15 pull-right"></div> 
+        <div class="container-fluid"> 
+         <div class="navbar-header"></div> 
+        </div> 
+       </nav> 
+       <div class="row m-t-45 m-l-35 m-r-35"> 
+        <div class="panel full-width bg-transparent"> 
+         <div class="panel full-width" style="border-bottom:1px solid rgba(230,230,230,.7)"> 
+          <form autocomplete="off" class="form-horizontal" id="form-work" name="form-work"> 
+           <ul class="nav nav-tabs nav-tabs-simple nav-tabs-simple-bg"> 
+            <li class="active" style="font-weight:bolder;color:#333"><a data-toggle="tab" href="#tab1main">主要</a> </li>
+            <li style="font-weight:bolder;color:#333"><a data-toggle="tab" href="#tab1network">网络</a> </li>
+            <li style="font-weight:bolder;color:#333"><a data-toggle="tab" href="#tab1window">窗口</a> </li>
+            <li style="font-weight:bolder;color:#333"><a data-toggle="tab" href="#tab1display">显示</a> </li>
+            <li style="font-weight:bolder;color:#333"><a data-toggle="tab" href="#tab1i2p">I2P</a> </li>
+            <li style="font-weight:bolder;color:#333"><a data-toggle="tab" href="#tab1tor">Tor</a> </li>
+           </ul> 
+           <div class="tab-content"> 
+            <div class="tab-pane active" id="tab1main"> 
+             <div class="row"> 
+              <div class="col-md-12"> 
+               <div id="options-main"> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optStartAtStartup">开机启动钱包</label> 
+                 <div class="col-sm-9"> 
+                  <div class="checkbox option check-danger"> 
+                   <input id="optStartAtStartup" type="checkbox" />
+                   <label class="option" for="optStartAtStartup"></label> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optDetachDatabases">关闭钱包时断开数据库连接</label> 
+                 <div class="col-sm-9"> 
+                  <div class="checkbox option check-danger"> 
+                   <input id="optDetachDatabases" type="checkbox" />
+                   <label class="option" for="optDetachDatabases"></label> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label option p-l-20" for="optFee">交易费用:</label> 
+                 <div class="col-sm-9"> 
+                  <p class="small hint-text">可选的交易费每KB，建议保留一点费用，这样能确保你的交易都被处理的很快</p>
+                  <p class="small hint-text">大部分的交易是1KB，费用为0.01</p> 
+                  <input id="optFee" class="form-control-options-page" onchange="unit.parse(this,$(&quot;#optFeeunit&quot;).val())" placeholder="0.00000000" step="0.01" type="number" value="0.00000000" />
+                  <select class="select-drop-down" id="optFeeunit" onchange="unit.format(&quot;#optFee&quot;,$(this).val())"><option title="FulcraCoin" value="0">FUC </option><option title="Milli-FulcraCoin (1 / 1000)" value="1">mFUC </option><option title="Micro-FulcraCoin (1 / 1000000)" value="2">&micro;FUC </option><option title="FulcraCoinshi (1 / 100000000)" value="3">FulcraCoinshi</option></select>
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optStaking">开启权益</label> 
+                 <div class="col-sm-9"> 
+                  <div class="checkbox option check-danger"> 
+                   <input data-linked="optReserveBalance optReserveBalanceunit" id="optStaking" type="checkbox" />
+                   <label class="option" for="optStaking"></label> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label option p-l-20" for="optReserveBalance">保留:</label> 
+                 <div class="col-sm-9"> 
+                  <p class="small hint-text">保留的这一部分不会参与权益，可以随时使用</p> 
+                  <input id="optReserveBalance" class="form-control-options-page" onchange="unit.parse(this,$(&quot;#optReserveBalanceunit&quot;).val())" placeholder="0.00000000" step="0.01" type="number" value="0.00000000" />
+                  <select class="select-drop-down" id="optReserveBalanceunit" onchange="unit.format(&quot;#optReserveBalance&quot;,$(this).val())"><option title="FulcraCoin" value="0">FUC </option><option title="Milli-FulcraCoin (1 / 1000)" value="1">mFUC </option><option title="Micro-FulcraCoin (1 / 1000000)" value="2">&micro;FUC </option><option title="FulcraCoinshi (1 / 100000000)" value="3">FulcraCoinshi</option></select>
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label option p-l-20" for="optMinStakeInterval" title="两次权益的最小间隔(秒)">最小权益间隔</label> 
+                 <div class="col-sm-9"> 
+                  <div class="option"> 
+                   <input id="optMinStakeInterval" class="form-control-options-page" placeholder="30" title="两次权益的最小间隔(秒)" type="number" /> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label option p-l-20" for="optMinRingSize">最小环大小:</label> 
+                 <div class="col-sm-9"> 
+                  <div class="option"> 
+                   <input id="optMinRingSize" class="form-control-options-page" min="3" placeholder="3" type="number" /> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label option p-l-20" for="optMaxRingSize" title="两次权益的最小间隔(秒)">最大环大小:</label> 
+                 <div class="col-sm-9"> 
+                  <div class="option"> 
+                   <input id="optMaxRingSize" class="form-control-options-page" max="200" placeholder="100" step="1" type="number" /> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optAutoRingSize">自动选择环大小</label> 
+                 <div class="col-sm-9"> 
+                  <div class="checkbox option check-danger"> 
+                   <input id="optAutoRingSize" title="基于最佳可用输出计数的自动选择环大小" type="checkbox" />
+                   <label class="option" for="optAutoRingSize" title="基于最佳可用输出计数的自动选择环大小"></label> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optSecureMessaging">启用安全的消息</label> 
+                 <div class="col-sm-9"> 
+                  <div class="checkbox option check-danger"> 
+                   <input id="optSecureMessaging" type="checkbox" />
+                   <label class="option" for="optSecureMessaging"></label> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20">薄模式 (Requires Restart)</label> 
+                 <div class="col-sm-9"> 
+                  <div class="checkbox option check-danger"> 
+                   <input data-linked="optThinFullIndex optThinIndexWindow" id="optThinMode" type="checkbox" />
+                   <label class="option" for="optThinMode"></label> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optThinFullIndex">薄全索引</label> 
+                 <div class="col-sm-9"> 
+                  <div class="checkbox option check-danger"> 
+                   <input id="optThinFullIndex" title="保持内存中的整个块索引" type="checkbox" />
+                   <label class="option" for="optThinFullIndex" title="保持内存中的整个块索引"></label> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label option p-l-20" for="optThinIndexWindow" title="当不是薄索引不是完整的时候，这个最大数量块头信息保存到内存中">薄索引窗口</label> 
+                 <div class="col-sm-9"> 
+                  <div class="option"> 
+                   <input id="optThinIndexWindow" class="form-control-options-page" placeholder="4096" step="64" title="当不是薄索引不是完整的时候，这个最大数量块头信息保存到内存中" type="number" /> 
+                  </div> 
+                 </div> 
+                </div> 
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+            <div class="tab-pane" id="tab1network"> 
+             <div class="row"> 
+              <div class="col-md-12"> 
+               <div id="options-network"> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optMapPortUPnP">UPnP端口</label> 
+                 <div class="col-sm-9"> 
+                  <div class="checkbox option check-danger"> 
+                   <input id="optMapPortUPnP" type="checkbox" />
+                   <label class="option" for="optMapPortUPnP"></label> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optProxyUse">通过代理连接:</label> 
+                 <div class="col-sm-9"> 
+                  <div class="checkbox option check-danger"> 
+                   <input data-linked="optProxyIP optProxyPort optProxySocksVersion" id="optProxyUse" type="checkbox" />
+                   <label class="option" for="optProxyUse"></label> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label option p-l-20">详情</label> 
+                 <div class="col-sm-9"> 
+                  <div class="option"> 
+                   <label class="option m-r-10" for="optProxyIP">代理IP:</label>
+                   <input class="input_box form-control-options-page" id="optProxyIP" placeholder="127.0.0.1" />
+                   <label class="option m-r-10 m-l-10" for="optProxyPort">端口:</label>
+                   <input class="input_box form-control-options-page" id="optProxyPort" placeholder="9050" />
+                   <label class="option m-r-10 m-l-10" for="optProxySocksVersion">SOCKS版本:</label>
+                   <select class="select-drop-down-small" id="optProxySocksVersion"><option>4 </option><option>5</option></select> 
+                  </div> 
+                 </div> 
+                </div> 
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+            <div class="tab-pane" id="tab1window"> 
+             <div class="row"> 
+              <div class="col-md-12"> 
+               <div id="options-window"> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optMinimizeToTray">最小化是隐藏到工具栏</label> 
+                 <div class="col-sm-9"> 
+                  <div class="checkbox option check-danger"> 
+                   <input id="optMinimizeToTray" type="checkbox" />
+                   <label class="option" for="optMinimizeToTray"></label> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optMinimizeOnClose">关闭时隐藏到工具栏</label> 
+                 <div class="col-sm-9"> 
+                  <div class="checkbox option check-danger"> 
+                   <input id="optMinimizeOnClose" type="checkbox" />
+                   <label class="option" for="optMinimizeOnClose"></label> 
+                  </div> 
+                 </div> 
+                </div> 
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+            <div class="tab-pane" id="tab1display"> 
+             <div class="row"> 
+              <div class="col-md-12"> 
+               <div id="options-display"> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optLanguage">语言:</label> 
+                 <div class="col-sm-9"> 
+                  <div class="option"> 
+                   <select class="select-drop-down" id="optLanguage"></select> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optDisplayUnit">单位:</label> 
+                 <div class="col-sm-9"> 
+                  <div class="option"> 
+                   <select class="select-drop-down" id="optDisplayUnit"><option title="FulcraCoin" value="0">FUC </option><option title="Milli-FulcraCoin (1 / 1000)" value="1">mFUC </option><option title="Micro-FulcraCoin (1 / 1000000)" value="2">&micro;FUC </option><option title="FulcraCoinshi (1 / 100000000)" value="3">FulcraCoinshi</option></select>
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label option p-l-20" for="optRowsPerPage">每页的条数:</label> 
+                 <div class="col-sm-9"> 
+                  <div class="option"> 
+                   <input class="form-control-options-page" id="optRowsPerPage" placeholder="20" step="5" type="number" value="20" /> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optDisplayAddresses">在交易列表中显示地址</label> 
+                 <div class="col-sm-9"> 
+                  <div class="checkbox option check-danger"> 
+                   <input id="optDisplayAddresses" type="checkbox" />
+                   <label class="option" for="optDisplayAddresses"></label> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optNotifications">通知:</label> 
+                 <div class="col-sm-9"> 
+                  <div class="option select-multiple"> 
+                   <select class="form-control-options-page" id="optNotifications" multiple="" size="8"></select> 
+                  </div> 
+                 </div> 
+                </div> 
+                <div class="form-group"> 
+                 <label class="col-sm-3 control-label p-l-20" for="optVisibleTransactions">可见交易类型:</label> 
+                 <div class="col-sm-9"> 
+                  <select class="form-control-options-page" id="optVisibleTransactions" multiple="" size="7"></select> 
+                 </div> 
+                </div> 
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+            <div class="tab-pane" id="tab1i2p"> 
+             <div class="row"> 
+              <div class="col-md-12"> 
+               <div id="options-display">
+                I2P (即将实现)
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+            <div class="tab-pane" id="tab1tor"> 
+             <div class="row"> 
+              <div class="col-md-12"> 
+               <div id="options-display">
+                TOR (即将实现)
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+           </div> 
+           <div class="center-div m-t-25 m-b-25 p-t-25" style="border-top:1px solid rgba(230,230,230,.7)"> 
+            <a class="btn btn-default btn-cons" id="options-cancel" onclick="optionsPage.update(),prevPage.click()"><i class="fa fa-times"></i>取消</a> 
+            <a class="btn btn-default btn-cons" id="options-apply" onclick="this.className.indexOf(&quot;disabled&quot;)==-1&amp;&amp;optionsPage.save()">接受 <i class="fa fa-check"></i> </a>
+            <a class="btn btn-default btn-cons" id="options-ok" onclick="this.className.indexOf(&quot;disabled&quot;)==-1&amp;&amp;(optionsPage.save(),prevPage.click())">确认<i class="fa fa-check"></i> </a> 
+           </div> 
+          </form> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </article> 
+     <article id="walletmanagement" style="height:660px;"> 
+		<div class="page-content-wrapper" style="height:660px;">
+			</div>
+     </article> 
+    </div> 
+   </div> 
+  </div> 
+  <script src="qrc:///assets/plugins/pace/pace.min.js"></script> 
+  <script src="qrc:///assets/plugins/jquery/jquery-1.11.1.min.js"></script> 
+  <script src="qrc:///assets/plugins/modernizr.custom.js"></script> 
+  <script src="qrc:///assets/plugins/jquery-ui/jquery-ui.min.js"></script> 
+  <script src="qrc:///assets/plugins/boostrapv3/js/bootstrap.min.js"></script> 
+  <script src="qrc:///assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script> 
+  <script src="qrc:///assets/plugins/classie/classie.js"></script> 
+  <script src="qrc:///assets/plugins/footable/footable.js"></script> 
+  <script src="qrc:///assets/plugins/footable/footable.sort.js"></script> 
+  <script src="qrc:///assets/plugins/footable/footable.filter.js"></script> 
+  <script src="qrc:///assets/plugins/footable/footable.paginate.js"></script> 
+  <script src="qrc:///assets/plugins/contextMenu/contextMenu.min.js"></script> 
+  <script src="qrc:///assets/plugins/iscroll/iscroll.js"></script> 
+  <script src="qrc:///assets/plugins/jquery-transit/jquery.transit.min.js"></script> 
+  <script src="qrc:///assets/plugins/qrcode/qrcode.min.js"></script> 
+  <script src="qrc:///assets/plugins/markdown/markdown.min.js"></script> 
+  <script src="qrc:///assets/plugins/framework/framework.min.js"></script> 
+  <script src="qrc:///assets/js/tooltip.min.js"></script> 
+  <script src="qrc:///assets/js/navigation.min.js"></script> 
+  <script src="qrc:///assets/js/qrcode.min.js"></script> 
+  <script src="qrc:///assets/plugins/pnglib/pnglib.js"></script> 
+  <script src="qrc:///assets/plugins/identicon/identicon.js"></script> 
+  <script src="qrc:///assets/plugins/shajs/shajs.js"></script> 
+  <script src="qrc:///assets/js/shadow.min.js"></script> 
+  <script src="qrc:///assets/js/pages/send.min.js"></script> 
+  <script src="qrc:///assets/plugins/emojione/emojione.js"></script> 
+  <script>$(window).resize(function(){$(".contact-discussion").height($(window).height()-276),$("#contact-list").height($(window).height()-80),$("#contact-group-list").height($(window).height()-80),$("#contact-book-list").height($(window).height()-60)}),$(window).trigger("resize")</script>
+ </body>
+</html>
